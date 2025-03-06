@@ -9,7 +9,7 @@ import com.example.mynotesapp.db.DatabaseContract.NoteColumns.Companion._ID
 import java.sql.SQLException
 
 class NoteHelper (context: Context) {
-    private val databaseHelper: DatabaseHelper = DatabaseHelper(context)
+    private var databaseHelper: DatabaseHelper = DatabaseHelper(context)
     private lateinit var database: SQLiteDatabase
 
     companion object {
@@ -40,8 +40,7 @@ class NoteHelper (context: Context) {
             null,
             null,
             null,
-            "$_ID ASC"
-        )
+            "$_ID ASC")
     }
     fun queryById(id: String): Cursor {
         return database.query(

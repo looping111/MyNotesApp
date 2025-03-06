@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -44,10 +45,16 @@ class MainActivity : AppCompatActivity() {
                     showSnackbarMessage("Satu item berhasil ditemukan")
                 }
                 NoteAddUpdateActivity.RESULT_UPDATE -> {
-                    val note = result.data?.getParcelableExtra<Note>(NoteAddUpdateActivity.EXTRA_NOTE) as Note
+                    val note = result?.data?.getParcelableExtra<Note>(NoteAddUpdateActivity.EXTRA_NOTE) as Note
                     val position = result?.data?.getIntExtra(NoteAddUpdateActivity.EXTRA_POSITION, 0) as Int
                     adapter.updateItem(position, note)
+                    binding.rvNotes.smoothScrollToPosition(position)
                     showSnackbarMessage("Satu item berhasil diapus")
+                }
+                NoteAddUpdateActivity.RESULT_DELETE -> {
+                    val position = result.data?.getIntExtra(NoteAddUpdateActivity.EXTRA_POSITION,0) as Int
+                    adapter.removeItem(position)
+                    showSnackbarMessage("Satu item berhasil dihapus")
                 }
             }
         }
@@ -76,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         binding.rvNotes.layoutManager = LinearLayoutManager(this)
         binding.rvNotes.setHasFixedSize(true)
 
-        adapter = NoteAdapter(object : NoteAdapter.OnItemClickback {
+        adapter = NoteAdapter(object : NoteAdapter.OnItemClickCallback {
             override fun onItemClicked(selectedNote: Note?, position: Int?) {
                 val intent = Intent(this@MainActivity, NoteAddUpdateActivity::class.java)
                 intent.putExtra(NoteAddUpdateActivity.EXTRA_NOTE, selectedNote)

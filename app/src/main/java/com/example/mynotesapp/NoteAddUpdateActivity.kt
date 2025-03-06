@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+@Suppress("DEPRECATION")
 class NoteAddUpdateActivity : AppCompatActivity(), View.OnClickListener {
 
     private var isEdit = false
@@ -113,6 +114,7 @@ class NoteAddUpdateActivity : AppCompatActivity(), View.OnClickListener {
                 val result = noteHelper.insert(values)
                 if (result > 0 ) {
                     note?.id = result.toInt()
+                    setResult(RESULT_ADD, intent)
                     finish()
                 } else {
                     Toast.makeText(this@NoteAddUpdateActivity, "Gagal menambah data", Toast.LENGTH_SHORT).show()

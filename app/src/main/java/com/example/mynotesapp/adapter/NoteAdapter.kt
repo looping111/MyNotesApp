@@ -8,7 +8,7 @@ import com.example.mynotesapp.R
 import com.example.mynotesapp.databinding.ItemNoteBinding
 import com.example.mynotesapp.entity.Note
 
-class NoteAdapter (private val onItemClickback: OnItemClickback) :
+class NoteAdapter (private val onItemClickCallback: OnItemClickCallback) :
     RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
         var listNotes = ArrayList<Note>()
@@ -45,7 +45,7 @@ class NoteAdapter (private val onItemClickback: OnItemClickback) :
             binding.tvItemTitle.text = note.title
             binding.tvItemDescription.text = note.description
             binding.cvItemNote.setOnClickListener {
-                onItemClickback.onItemClicked(note, adapterPosition)
+                onItemClickCallback.onItemClicked(note, adapterPosition)
             }
         }
     }
@@ -57,7 +57,7 @@ class NoteAdapter (private val onItemClickback: OnItemClickback) :
     override fun getItemCount(): Int = this.listNotes.size
 
 
-    interface OnItemClickback {
+    interface OnItemClickCallback {
         fun onItemClicked(selectedNote: Note?, position: Int?)
     }
 }
